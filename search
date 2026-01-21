@@ -1,0 +1,617 @@
+<!-- =========================
+     STYLES
+========================= -->
+<style>
+  #results {
+    max-width: 800px;
+    margin: 20px auto;
+  }
+
+  #searchInput {
+    width: 100%;
+    max-width: 700px;
+    padding: 18px 22px;
+    margin: 25px auto;
+    display: block;
+    font-size: 18px;
+    border-radius: 10px;
+    border: 1px solid #aaa;
+  }
+
+  /* Two-column filter layout */
+  .filterGrid {
+    max-width: 700px;
+    margin: 10px auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .span2 {
+    grid-column: 1 / -1;
+  }
+
+  .filterGroup {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #fafafa;
+    padding: 12px 14px;
+  }
+
+  .filterHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .filterTitle {
+    font-weight: 700;
+  }
+
+  .filterActions {
+    display: inline-flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .miniBtn {
+    padding: 6px 10px;
+    font-size: 12px;
+    border-radius: 999px;
+    border: 1px solid #bbb;
+    background: white;
+    cursor: pointer;
+  }
+
+  details.filterDetails {
+    margin-top: 8px;
+  }
+
+  details.filterDetails > summary {
+    cursor: pointer;
+    user-select: none;
+    font-size: 13px;
+    color: #444;
+    margin-bottom: 10px;
+    list-style: none;
+  }
+
+  details.filterDetails > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .summaryPill {
+    display: inline-block;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 999px;
+    padding: 6px 10px;
+  }
+
+  .checkboxGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+  }
+
+  .checkboxItem {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #e5e5e5;
+    background: white;
+    padding: 8px 10px;
+    border-radius: 999px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .checkboxItem input {
+    transform: scale(1.05);
+    cursor: pointer;
+  }
+
+  .searchButton {
+    display: block;
+    margin: 20px auto 10px;
+    padding: 14px 36px;
+    background: #4A4A4A;
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+  }
+
+  .clearButton {
+    display: block;
+    margin: 0 auto 25px;
+    padding: 10px 30px;
+    background: white;
+    color: #4A4A4A;
+    font-size: 16px;
+    border: 2px solid #4A4A4A;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .resultItem {
+    background: #fafafa;
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+  }
+
+  .pdfLink {
+    color: #1e88e5;
+    font-weight: bold;
+    text-decoration: none;
+  }
+</style>
+
+
+<!-- =========================
+     SEARCH INPUT
+========================= -->
+<input id="searchInput" type="text" placeholder="Search keywords (ex: Adaptation Planning)" />
+
+
+<!-- =========================
+     FILTERS LAYOUT (as requested)
+     Row 1: Organization Type | Size of Communities Served
+     Row 2: Services Provided  | Sector Expertise
+     Row 3: Hazard Expertise (full width)
+     Results appear directly under Hazard filter
+========================= -->
+<div class="filterGrid">
+
+  <!-- Organization Type -->
+  <div class="filterGroup">
+    <div class="filterHeader">
+      <div class="filterTitle">Organization Type</div>
+      <div class="filterActions">
+        <button class="miniBtn" type="button" onclick="selectAll('orgTypeFilter')">Select all</button>
+        <button class="miniBtn" type="button" onclick="clearAll('orgTypeFilter')">Clear</button>
+      </div>
+    </div>
+    <details class="filterDetails" open>
+      <summary><span class="summaryPill">Show / hide organization types</span></summary>
+      <div class="checkboxGrid" id="orgTypeFilter"></div>
+    </details>
+  </div>
+
+  <!-- Size of Communities Served -->
+  <div class="filterGroup">
+    <div class="filterHeader">
+      <div class="filterTitle">Size of Communities Served</div>
+      <div class="filterActions">
+        <button class="miniBtn" type="button" onclick="selectAll('communitySizeFilter')">Select all</button>
+        <button class="miniBtn" type="button" onclick="clearAll('communitySizeFilter')">Clear</button>
+      </div>
+    </div>
+    <details class="filterDetails" open>
+      <summary><span class="summaryPill">Show / hide community sizes</span></summary>
+      <div class="checkboxGrid" id="communitySizeFilter"></div>
+    </details>
+  </div>
+
+  <!-- Services Provided -->
+  <div class="filterGroup">
+    <div class="filterHeader">
+      <div class="filterTitle">Services Provided</div>
+      <div class="filterActions">
+        <button class="miniBtn" type="button" onclick="selectAll('servicesFilter')">Select all</button>
+        <button class="miniBtn" type="button" onclick="clearAll('servicesFilter')">Clear</button>
+      </div>
+    </div>
+    <details class="filterDetails">
+      <summary><span class="summaryPill">Show / hide services</span></summary>
+      <div class="checkboxGrid" id="servicesFilter"></div>
+    </details>
+  </div>
+
+  <!-- Sector Expertise -->
+  <div class="filterGroup">
+    <div class="filterHeader">
+      <div class="filterTitle">Sector Expertise</div>
+      <div class="filterActions">
+        <button class="miniBtn" type="button" onclick="selectAll('sectorFilter')">Select all</button>
+        <button class="miniBtn" type="button" onclick="clearAll('sectorFilter')">Clear</button>
+      </div>
+    </div>
+    <details class="filterDetails">
+      <summary><span class="summaryPill">Show / hide sectors</span></summary>
+      <div class="checkboxGrid" id="sectorFilter"></div>
+    </details>
+  </div>
+
+  <!-- Hazard Expertise (full width) -->
+  <div class="filterGroup span2">
+    <div class="filterHeader">
+      <div class="filterTitle">Hazard Expertise</div>
+      <div class="filterActions">
+        <button class="miniBtn" type="button" onclick="selectAll('hazardFilter')">Select all</button>
+        <button class="miniBtn" type="button" onclick="clearAll('hazardFilter')">Clear</button>
+      </div>
+    </div>
+    <details class="filterDetails">
+      <summary><span class="summaryPill">Show / hide hazards</span></summary>
+      <div class="checkboxGrid" id="hazardFilter"></div>
+    </details>
+  </div>
+
+</div>
+
+<!-- Buttons -->
+<button onclick="runSearch()" class="searchButton">Search</button>
+<button onclick="clearFilters()" class="clearButton">Clear</button>
+
+<!-- Results (below Hazard Expertise, per request) -->
+<div id="results"></div>
+
+
+<!-- =========================
+     PapaParse
+========================= -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+
+<!-- =========================
+     SCRIPT
+========================= -->
+<script>
+  const csvUrl =
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vRd8jIdoR5Y3mzIIkqQBDinYoKNw8mhIFi1hNGTIVYJFhbWwT9_7Yp59bJ8TIHaXOlwbibBHmCQY5vX/pub?gid=0&single=true&output=csv";
+
+  let database = [];
+  let headers = [];
+
+  Papa.parse(csvUrl, {
+    download: true,
+    header: true,
+    skipEmptyLines: true,
+    complete: ({ data, meta, errors }) => {
+      if (errors?.length) console.warn("CSV parse warnings:", errors);
+
+      headers = (meta?.fields || [])
+        .map(h => String(h || "").trim())
+        .filter(Boolean);
+
+      database = (data || []).filter(row =>
+        row && typeof row === "object" &&
+        Object.values(row).some(v => String(v || "").trim() !== "")
+      );
+
+      populateFilters();
+    },
+    error: err => {
+      document.getElementById("results").innerHTML =
+        "<p>Could not load the sheet. Make sure it is <b>Published to the web</b> as CSV.</p>";
+      console.error(err);
+    }
+  });
+
+  // -------------------------
+  // Helpers
+  // -------------------------
+  function norm(s) { return String(s || "").trim(); }
+
+  function isTrueish(v) {
+    const s = String(v || "").trim().toLowerCase();
+    return s === "true" || s === "yes" || s === "y" || s === "1" || s === "checked";
+  }
+
+  // Prevent TRUE/FALSE from ever becoming a filter option
+  function isBoolWord(v) {
+    const s = String(v || "").trim().toLowerCase();
+    return s === "true" || s === "false";
+  }
+
+  function findColumnByIncludes(possibleNames) {
+    if (!database.length) return null;
+
+    const cols = Object.keys(database[0] || {});
+    const lowerCols = cols.map(c => c.toLowerCase().trim());
+
+    // exact match
+    for (const name of possibleNames) {
+      const idx = lowerCols.indexOf(String(name).toLowerCase().trim());
+      if (idx >= 0) return cols[idx];
+    }
+
+    // contains match
+    for (const part of possibleNames) {
+      const idx = lowerCols.findIndex(c => c.includes(String(part).toLowerCase().trim()));
+      if (idx >= 0) return cols[idx];
+    }
+
+    return null;
+  }
+
+  // Build options from HEADER NAMES like:
+  // "Services Provided: Adaptation Planning"
+  function optionsFromHeaderPrefixes(prefixes) {
+    const opts = new Set();
+    headers.forEach(h => {
+      const hl = h.toLowerCase();
+      for (const p of prefixes) {
+        const pl = p.toLowerCase();
+        if (hl.startsWith(pl)) {
+          const label = h.slice(p.length).trim();
+          if (label) opts.add(label);
+        }
+      }
+    });
+    return opts;
+  }
+
+  // For a ROW: collect which header-prefixed columns are TRUE
+  function collectTrueFromHeaderPrefixes(item, prefixes) {
+    const out = [];
+    headers.forEach(h => {
+      const hl = h.toLowerCase();
+      for (const p of prefixes) {
+        const pl = p.toLowerCase();
+        if (hl.startsWith(pl)) {
+          if (isTrueish(item[h])) out.push(h.slice(p.length).trim());
+        }
+      }
+    });
+    return out.filter(Boolean);
+  }
+
+  // Fallback: comma-separated list in a single column
+  function collectFromCommaColumn(item, colName) {
+    const raw = norm(item[colName]);
+    if (!raw) return [];
+    return raw
+      .split(",")
+      .map(x => x.trim())
+      .filter(Boolean)
+      .filter(x => !isBoolWord(x)); // remove TRUE/FALSE if they ever appear
+  }
+
+  // -------------------------
+  // Prefixes (match your header style)
+  // -------------------------
+  const ORGTYPE_PREFIXES = ["Organization Type:", "Org Type:", "Type:"];
+  const SIZE_PREFIXES = [
+    "Size of Communities Served:",
+    "Size of communities where we work:",
+    "Community Size:",
+    "Size:"
+  ];
+
+  const SERVICES_PREFIXES = ["Services Provided:", "Service:", "Services:", "Service -", "Services -"];
+  const SECTOR_PREFIXES   = ["Sector Expertise:", "Sector:", "Sectors:", "Sector -", "Sectors -"];
+  const HAZARD_PREFIXES   = ["Hazard Expertise:", "Hazard:", "Hazards:", "Hazard -", "Hazards -"];
+
+  // Single columns (fallback only)
+  const ORG_TYPE_COL = () => findColumnByIncludes(["Organization Type", "Org Type", "Type"]);
+  const SIZE_COL = () => findColumnByIncludes([
+    "Size of communities where we work",
+    "Size of Communities Served",
+    "Community Size",
+    "Size"
+  ]);
+
+  const SERVICES_COL = () => findColumnByIncludes(["Services provided", "Services Provided", "Services"]);
+  const SECTOR_COL   = () => findColumnByIncludes(["Sector Expertise", "Sectors", "Sector"]);
+  const HAZARD_COL   = () => findColumnByIncludes(["Hazard Expertise", "Hazards", "Hazard"]);
+
+  // Display columns
+  const ORG_NAME_COL = () => findColumnByIncludes(["Organization Name", "Organization", "Org Name", "Name"]);
+  const WEBSITE_COL  = () => findColumnByIncludes(["Website", "URL", "Link"]);
+  const EMAIL_COL    = () => findColumnByIncludes(["Email", "E-mail"]);
+
+  // -------------------------
+  // Populate filter UI
+  // -------------------------
+  function populateFilters() {
+    //  Build filter options from HEADER NAMES (never from TRUE/FALSE cell values)
+    const orgTypes = optionsFromHeaderPrefixes(ORGTYPE_PREFIXES);
+    const sizes    = optionsFromHeaderPrefixes(SIZE_PREFIXES);
+    const services = optionsFromHeaderPrefixes(SERVICES_PREFIXES);
+    const sectors  = optionsFromHeaderPrefixes(SECTOR_PREFIXES);
+    const hazards  = optionsFromHeaderPrefixes(HAZARD_PREFIXES);
+
+    // Fallback: if org type / size are NOT checkbox headers, pull from single columns
+    const orgTypeCol = ORG_TYPE_COL();
+    const sizeCol = SIZE_COL();
+
+    // Fallback comma-style for services/sectors/hazards too (optional)
+    const servicesCol = SERVICES_COL();
+    const sectorCol = SECTOR_COL();
+    const hazardCol = HAZARD_COL();
+
+    database.forEach(item => {
+      if (orgTypes.size === 0 && orgTypeCol) {
+        const v = norm(item[orgTypeCol]);
+        if (v && !isBoolWord(v)) orgTypes.add(v);
+      }
+
+      if (sizes.size === 0 && sizeCol) {
+        const v = norm(item[sizeCol]);
+        if (v && !isBoolWord(v)) sizes.add(v);
+      }
+
+      if (servicesCol) collectFromCommaColumn(item, servicesCol).forEach(v => services.add(v));
+      if (sectorCol)   collectFromCommaColumn(item, sectorCol).forEach(v => sectors.add(v));
+      if (hazardCol)   collectFromCommaColumn(item, hazardCol).forEach(v => hazards.add(v));
+    });
+
+    fillCheckboxes("orgTypeFilter", orgTypes);
+    fillCheckboxes("communitySizeFilter", sizes);
+    fillCheckboxes("servicesFilter", services);
+    fillCheckboxes("sectorFilter", sectors);
+    fillCheckboxes("hazardFilter", hazards);
+  }
+
+  function fillCheckboxes(containerId, values) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = "";
+
+    [...values]
+      .filter(Boolean)
+      .filter(v => !isBoolWord(v)) //  never show TRUE/FALSE as options
+      .sort()
+      .forEach(v => {
+        const label = document.createElement("label");
+        label.className = "checkboxItem";
+
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.value = v;
+        input.name = containerId;
+
+        const text = document.createElement("span");
+        text.textContent = v;
+
+        label.appendChild(input);
+        label.appendChild(text);
+        container.appendChild(label);
+      });
+  }
+
+  function selectAll(containerId) {
+    document.querySelectorAll(`#${containerId} input[type="checkbox"]`)
+      .forEach(cb => (cb.checked = true));
+  }
+
+  function clearAll(containerId) {
+    document.querySelectorAll(`#${containerId} input[type="checkbox"]`)
+      .forEach(cb => (cb.checked = false));
+  }
+
+  function getCheckedValues(containerId) {
+    return [...document.querySelectorAll(`#${containerId} input[type="checkbox"]:checked`)]
+      .map(cb => cb.value);
+  }
+
+  function clearFilters() {
+    document.getElementById("searchInput").value = "";
+    ["orgTypeFilter", "communitySizeFilter", "servicesFilter", "sectorFilter", "hazardFilter"]
+      .forEach(id => clearAll(id));
+    document.getElementById("results").innerHTML = "";
+  }
+
+  // -------------------------
+  // Search + Filter
+  // -------------------------
+  function runSearch() {
+    const results = document.getElementById("results");
+
+    const terms = document.getElementById("searchInput").value
+      .toLowerCase()
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+
+    const selectedOrgTypes = getCheckedValues("orgTypeFilter");
+    const selectedSizes = getCheckedValues("communitySizeFilter");
+    const selectedServices = getCheckedValues("servicesFilter");
+    const selectedSectors = getCheckedValues("sectorFilter");
+    const selectedHazards = getCheckedValues("hazardFilter");
+
+    const orgTypeCol = ORG_TYPE_COL();
+    const sizeCol = SIZE_COL();
+
+    const servicesCol = SERVICES_COL();
+    const sectorCol = SECTOR_COL();
+    const hazardCol = HAZARD_COL();
+
+    const filtered = database.filter(item => {
+      const text = Object.values(item).join(" ").toLowerCase();
+      if (terms.length && !terms.every(t => text.includes(t))) return false;
+
+      //  Row values for org type / size:
+      // Prefer checkbox-headers ("Organization Type: X" true)
+      // Fallback to single column if needed
+      const rowOrgTypes = collectTrueFromHeaderPrefixes(item, ORGTYPE_PREFIXES);
+      const rowSizes    = collectTrueFromHeaderPrefixes(item, SIZE_PREFIXES);
+
+      const orgList = rowOrgTypes.length
+        ? rowOrgTypes
+        : (orgTypeCol ? [norm(item[orgTypeCol])].filter(v => v && !isBoolWord(v)) : []);
+
+      const sizeList = rowSizes.length
+        ? rowSizes
+        : (sizeCol ? [norm(item[sizeCol])].filter(v => v && !isBoolWord(v)) : []);
+
+      // Services / sectors / hazards row values
+      const rowServices = collectTrueFromHeaderPrefixes(item, SERVICES_PREFIXES);
+      const rowSectors  = collectTrueFromHeaderPrefixes(item, SECTOR_PREFIXES);
+      const rowHazards  = collectTrueFromHeaderPrefixes(item, HAZARD_PREFIXES);
+
+      const svcList = rowServices.length ? rowServices : (servicesCol ? collectFromCommaColumn(item, servicesCol) : []);
+      const secList = rowSectors.length  ? rowSectors  : (sectorCol   ? collectFromCommaColumn(item, sectorCol)   : []);
+      const hazList = rowHazards.length  ? rowHazards  : (hazardCol   ? collectFromCommaColumn(item, hazardCol)   : []);
+
+      // Apply selected filters (ANY within each category)
+      if (selectedOrgTypes.length && !selectedOrgTypes.some(v => orgList.includes(v))) return false;
+      if (selectedSizes.length && !selectedSizes.some(v => sizeList.includes(v))) return false;
+
+      if (selectedServices.length && !selectedServices.some(s => svcList.includes(s))) return false;
+      if (selectedSectors.length  && !selectedSectors.some(s => secList.includes(s))) return false;
+      if (selectedHazards.length  && !selectedHazards.some(h => hazList.includes(h))) return false;
+
+      return true;
+    });
+
+    if (!filtered.length) {
+      results.innerHTML = "<p>No results found.</p>";
+      return;
+    }
+
+    const nameCol = ORG_NAME_COL();
+    const webCol  = WEBSITE_COL();
+    const emailCol = EMAIL_COL();
+
+    results.innerHTML = filtered.map(item => {
+      const name = nameCol ? norm(item[nameCol]) : "Organization";
+      const website = webCol ? norm(item[webCol]) : "";
+      const email = emailCol ? norm(item[emailCol]) : "";
+
+      //  Show ALL checked-off TRUE values for each org
+      const rowOrgTypes = collectTrueFromHeaderPrefixes(item, ORGTYPE_PREFIXES);
+      const rowSizes    = collectTrueFromHeaderPrefixes(item, SIZE_PREFIXES);
+
+      const orgList = rowOrgTypes.length
+        ? rowOrgTypes
+        : (ORG_TYPE_COL() ? [norm(item[ORG_TYPE_COL()])].filter(v => v && !isBoolWord(v)) : []);
+
+      const sizeList = rowSizes.length
+        ? rowSizes
+        : (SIZE_COL() ? [norm(item[SIZE_COL()])].filter(v => v && !isBoolWord(v)) : []);
+
+      const rowServices = collectTrueFromHeaderPrefixes(item, SERVICES_PREFIXES);
+      const rowSectors  = collectTrueFromHeaderPrefixes(item, SECTOR_PREFIXES);
+      const rowHazards  = collectTrueFromHeaderPrefixes(item, HAZARD_PREFIXES);
+
+      const svcList = rowServices.length ? rowServices : (SERVICES_COL() ? collectFromCommaColumn(item, SERVICES_COL()) : []);
+      const secList = rowSectors.length  ? rowSectors  : (SECTOR_COL()   ? collectFromCommaColumn(item, SECTOR_COL())   : []);
+      const hazList = rowHazards.length  ? rowHazards  : (HAZARD_COL()   ? collectFromCommaColumn(item, HAZARD_COL())   : []);
+
+      return `
+        <div class="resultItem">
+          <strong>${name || "Organization"}</strong><br><br>
+
+          <strong>Organization Type:</strong> ${orgList.length ? orgList.join(", ") : "None"}<br>
+          <strong>Size of Communities Served:</strong> ${sizeList.length ? sizeList.join(", ") : "None"}<br><br>
+
+          <strong>Services Provided:</strong> ${svcList.length ? svcList.join(", ") : "None"}<br>
+          <strong>Sector Expertise:</strong> ${secList.length ? secList.join(", ") : "None"}<br>
+          <strong>Hazard Expertise:</strong> ${hazList.length ? hazList.join(", ") : "None"}<br><br>
+
+          ${website ? `<a class="pdfLink" href="${website}" target="_blank" rel="noopener">Visit Website →</a>` : ""}
+          ${!website && email ? `<a class="pdfLink" href="mailto:${email}">Email →</a>` : ""}
+        </div>
+      `;
+    }).join("");
+  }
+</script>
+
+
