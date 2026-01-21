@@ -1,11 +1,7 @@
 # Climate-adaptitoner-database
 A centralized, Google Sheets–based database and future analytics platform built from the Registry of Adaptation Practitioners to support search, insights, and strategic planning for climate adaptation work in California.
 
-Adaptation Practitioners Database & Analytics Platform
-This project creates a standardized, accessible database of adaptation practitioners and organizations across California, serving as a foundational resource for Complexity users and the public.
-The database is designed to support future website integration with search, filtering, and analytics capabilities.
-
-The Platform Enables Users to:
+**The Platform Enables Users to:** 
 Search adaptation practitioners and organizations
 Filter by location, hazard, sector, services, and organization type
 Identify trends in adaptation work across California
@@ -20,46 +16,20 @@ Checkbox-enabled columns support filtering and analytics
 The sheet is designed for future integration into a web-based search and analytics interface
 Data Structure (Google Sheets)
 
-Each row represents a practitioner or organization. Proposed columns include:
-Contact Name
-Email
-Website
-Phone Number
-Organization Location
-Community Specializations
-Organization Type
-Services Provided
-Hazard Expertise
-Sector Expertise
-Size of Communities Served
-Geographic Areas of Work
-Analytics & Insights
-The database supports analysis of:
-Most common adaptation topics and hazards in California
-Most frequently provided services
-Sector representation and gaps
-Underserved regions and communities
-Hazards and sectors with limited practitioner coverage
-These insights inform strategic planning, program development, and partnerships.
-
-**Website Integration**
-The database is designed to power a future website interface featuring:
-Keyword search
-Filters by location, hazard, sector, services, and organization type
-Statistics dashboard with practitioner counts
-Visual summaries of trends and gaps
-Public-facing summaries and internal analytical views for Complexity staff
-
 **Deployment**
+This tool is designed to be embedded into a Squarespace site using a Code Block.
 
-Current phase focuses on database creation in Google Sheets.
-Future deployment will involve connecting the sheet to a website-based search and analytics interface.
+Steps:
+1. Publish the Google Sheet to the web as a CSV
+2. Copy the Google Sheets CSV URL
+3. Paste the contents of "search" into a Squarespace Code Block
+4. Save and publish the site
 
 **Updating Data**
 No structural changes are required to update content. Data can be maintained by editing the Google Sheet, provided column headers and formats remain consistent.
 
 **Deliverables**
-Google Sheets database populated from the Registry of Adaptation Practitioners
+Google Sheets database populated from the Registry of Adaptation Practitioners and independent research
 Standardized, analytics-ready column structure
 Foundation for future search, visualization, and analytics tools
 
@@ -67,7 +37,7 @@ Foundation for future search, visualization, and analytics tools
 This project improves transparency, accessibility, and understanding of California’s adaptation landscape while providing Complexity with a scalable, data-driven foundation for decision-making and public engagement.
 
 **Technologies Used**
-Google Sheets
-HTML
-CSS
-JavaScript
+- Google Sheets
+- HTML
+- CSS
+- JavaScript
