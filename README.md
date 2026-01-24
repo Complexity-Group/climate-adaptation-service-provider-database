@@ -1,8 +1,8 @@
-# Climate-service-provider-database
+# climate-adaptation-service-provider-database
 A centralized, Google-Sheets–based database of California-based climate adaptation service providers.
 
 **The Platform Enables Users to:** 
-Search adaptation practitioners and organizations
+Search climate adaptation service providers
 Filter by location, hazard, sector, services, and organization type
 
 **How It Works**
