@@ -207,7 +207,7 @@
         <button class="miniBtn" type="button" onclick="clearAll('servicesFilter')">Clear</button>
       </div>
     </div>
-    <details class="filterDetails">
+    <details class="filterDetails" open>
       <summary><span class="summaryPill">Show / hide services</span></summary>
       <div class="checkboxGrid" id="servicesFilter"></div>
     </details>
@@ -222,7 +222,7 @@
         <button class="miniBtn" type="button" onclick="clearAll('sectorFilter')">Clear</button>
       </div>
     </div>
-    <details class="filterDetails">
+    <details class="filterDetails" open>
       <summary><span class="summaryPill">Show / hide sectors</span></summary>
       <div class="checkboxGrid" id="sectorFilter"></div>
     </details>
@@ -237,7 +237,7 @@
         <button class="miniBtn" type="button" onclick="clearAll('hazardFilter')">Clear</button>
       </div>
     </div>
-    <details class="filterDetails">
+    <details class="filterDetails" open>
       <summary><span class="summaryPill">Show / hide hazards</span></summary>
       <div class="checkboxGrid" id="hazardFilter"></div>
     </details>
@@ -597,11 +597,9 @@
 
       return `
         <div class="resultItem">
-          <strong>${name || "Organization"}</strong><br><br>
+          <strong><em>${name || "Organization"}</em></strong><br><br>
 
           <strong>Organization Type:</strong> ${orgList.length ? orgList.join(", ") : "None"}<br>
-          <strong>Size of Communities Served:</strong> ${sizeList.length ? sizeList.join(", ") : "None"}<br><br>
-
           <strong>Services Provided:</strong> ${svcList.length ? svcList.join(", ") : "None"}<br>
           <strong>Sector Expertise:</strong> ${secList.length ? secList.join(", ") : "None"}<br>
           <strong>Hazard Expertise:</strong> ${hazList.length ? hazList.join(", ") : "None"}<br><br>
@@ -613,5 +611,3 @@
     }).join("");
   }
 </script>
-
-
